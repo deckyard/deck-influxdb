@@ -24,7 +24,10 @@
  * mix float / int / string / bool fields despite Jennifer's homogeneous maps.
  * Needs the default `jennifer` binary (`http` over `net`); a failed request
  * throws an `influxdb.InfluxdbError` (kind "influxdb", a 2.x client's token
- * redacted from it) with the HTTP `status` and a 2.x error `code`.
+ * redacted from it) with the HTTP `status` and a 2.x error `code`, except the
+ * generic kinds, which go on as `http` threw them: a socket failure is a
+ * `net.NetError` (kind "net"), a reached cap or a query reply past `json`'s
+ * decoding caps kind "limit", a deadline "timeout", a cut answer "closed".
  * @module influxdb
  * @example
  * import "@jennifer/influxdb/" as influxdb;
@@ -45,6 +48,7 @@ use time;
 use encoding;
 use regex;
 use maps;
+use lists;
 import "http.j" as http;
 import "uri.j" as uri;
 
@@ -525,12 +529,24 @@ func clean(text as string) {
     return $flat;
 }
 
-# send posts a request, turning a transport failure (refused, timed out, bad
-# URL) into an `influxdb` error like the server's own, credentials redacted.
+# The generic error kinds `send` passes on as they are: a socket failure is
+# `http`'s net.NetError (kind "net"), a reached cap "limit", a deadline
+# "timeout", a connection closed mid-answer "closed", a cancelled task
+# "cancelled".
+def const GENERIC_KINDS as list of string init ["net", "limit", "timeout", "closed", "cancelled"];
+
+# send posts a request. A generic kind goes on unchanged, so a NetError keeps
+# its fields; credentials ride in headers, never in the URL, so its message
+# names none, which is checked all the same. Any other transport failure
+# (malformed framing, a bad URL) becomes an `influxdb` error like the
+# server's own, credentials redacted.
 func send(c as Client, req as Req) {
     try {
         return http.post($req.url, $req.contentType, $req.body, $req.headers);
     } catch (e) {
+        if (lists.contains(GENERIC_KINDS, $e.kind) and redact($c, $e.message) == $e.message) {
+            throw $e;
+        }
         fail(redact($c, clean($e.message)));
     }
 }
@@ -739,6 +755,10 @@ export func query(c as Client, influxql as string) {
     try {
         $node = json.decode($resp.body);
     } catch (e) {
+        # a decoding cap stays kind "limit"
+        if ($e.kind == "limit") {
+            throw $e;
+        }
         fail(redact($c, "non-JSON response from the query endpoint"));
     }
     return parseQuery($node);

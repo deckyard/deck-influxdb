@@ -9,8 +9,8 @@
  * them back - InfluxQL against a 1.x client, Flux against a 2.x client. Needs
  * the default `jennifer` binary (net). Point it at a running InfluxDB (base URL
  * + database as the first two arguments, default http://localhost:8086 /
- * metrics); without a server the write / query throw `Error{kind: "influxdb"}`,
- * which this demo catches and reports.
+ * metrics); without a server the write / query throw (kind "net" for a
+ * refused connection), which this demo catches and reports.
  * Run: jennifer run examples/write.j [url] [db]
  * @module write
  */

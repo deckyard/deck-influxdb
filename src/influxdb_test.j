@@ -388,12 +388,46 @@ func testRedactsBasicAndShortSecrets() {
     testing.assertEqual(redact($short, "status 401 Token 4"), "status 401 <redacted>");
 }
 
-func refusedConnection() {
-    write(client("http://127.0.0.1:1", "db"), [field(point("m"), "v", 1.0)]);
+# A refused connection is http's net.NetError (kind "net"), passed on as it
+# is, so its fields stay readable; its message names no credential.
+func testARefusedConnectionIsANetError() {
+    def srv as httpd.Server init httpd.listen("127.0.0.1:0");
+    def addr as string init httpd.address($srv);
+    httpd.shutdown($srv);
+    def c as Client init client2("http://" + $addr, "org", "bucket", "secret-token");
+    try {
+        write($c, [field(point("m"), "v", 1.0)]);
+        throw Error{kind: "missed", message: "a refused connection"};
+    } catch (e) {
+        testing.assertEqual($e.kind, "net");
+        testing.assertEqual($e.reason, "refused");
+        testing.assertEqual($e.op, "connect");
+        testing.assertFalse($e.sent);
+        testing.assertFalse(strings.contains($e.message, "secret-token"));
+    }
 }
 
-func testTransportErrorsAreInfluxdb() {
-    testing.assertThrows("refusedConnection", "influxdb");
+# answerDeep answers one request with a 200 whose JSON nests past json's cap.
+func answerDeep(srv as httpd.Server) {
+    def req as httpd.Request init httpd.accept($srv);
+    httpd.setHeader($req, "Content-Type", "application/json");
+    httpd.respond($req, 200, strings.repeat("[", 1001));
+}
+
+# A query reply past json's nesting cap is kind "limit", not an InfluxdbError.
+func testADecodingCapIsALimit() {
+    def srv as httpd.Server init httpd.listen("127.0.0.1:0");
+    defer httpd.shutdown($srv);
+    def t as task of null init spawn {
+        answerDeep($srv);
+    };
+    try {
+        query(client("http://" + httpd.address($srv), "db"), "SELECT * FROM cpu");
+        throw Error{kind: "missed", message: "a decoding cap"};
+    } catch (e) {
+        testing.assertEqual($e.kind, "limit");
+    }
+    task.wait($t);
 }
 
 func topLevelError() {

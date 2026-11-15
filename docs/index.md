@@ -11,12 +11,16 @@ API generations: 1.x (`/write?db=...` + InfluxQL) and 2.x
 (`/api/v2/write?org=...&bucket=...` + Flux). InfluxDB 3.x takes the 2.x
 writes but has no Flux; query it with InfluxQL through a 1.x client. Built on
 the [`http`](https://jennifer-lang.dev/modules/http.html) module, so it needs
-the default `jennifer` binary. A failed request, refused, timed out or
-answered with an error, throws an `influxdb.InfluxdbError` (kind
-`"influxdb"`) with the client's credentials redacted. Its `status` is the HTTP
-status of the server's answer (0 when there was none) and `code` a 2.x error's
-code (`unauthorized`, `not found`, `invalid`, ...), so a caller branches on
-them instead of the message.
+the default `jennifer` binary. A request the server refuses, or answers with
+an error, throws an `influxdb.InfluxdbError` (kind `"influxdb"`) with the
+client's credentials redacted. Its `status` is the HTTP status of the
+server's answer (0 when there was none) and `code` a 2.x error's code
+(`unauthorized`, `not found`, `invalid`, ...), so a caller branches on them
+instead of the message. The generic kinds go on as `http` threw them: a
+socket failure (refused, reset, DNS, TLS) is a `net.NetError` (kind `"net"`,
+with `reason`, `sent` and `replied`), a reached cap or a query reply past
+`json`'s decoding caps is `"limit"`, a deadline `"timeout"` and an answer cut
+short `"closed"`.
 
 ```jennifer
 import "@jennifer/influxdb/" as influxdb;
