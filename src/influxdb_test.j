@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-3.0-only
 # SPDX-FileCopyrightText: Copyright (C) 2026 mplx <mplx@jennifer-lang.dev>
-# pragma-jennifer-version: >=0.26.0
+# pragma-jennifer-version: >=0.27.0
 #
 # influxdb_test.j - white-box tests for influxdb.j. Run with:
 #
@@ -214,7 +214,7 @@ func fakeInflux(srv as httpd.Server) {
     for (def i in 0..2) {
         def req as httpd.Request init httpd.accept($srv);
         if (httpd.path($req) == "/write") {
-            def body as string init convert.stringFromBytes("utf-8", httpd.body($req));
+            def body as string init encoding.decode("utf-8", httpd.body($req));
             if (httpd.method($req) == "POST" and
                 httpd.header($req, "Authorization") == $wantAuth and
                 httpd.query($req, "db") == "metrics" and httpd.query($req, "precision") == "ns" and
@@ -224,7 +224,7 @@ func fakeInflux(srv as httpd.Server) {
                 httpd.respond($req, 400, '{"error":"bad write request"}');
             }
         } elseif (httpd.path($req) == "/query" and
-            uri.parseQuery(convert.stringFromBytes("utf-8", httpd.body($req)))["q"] ==
+            uri.parseQuery(encoding.decode("utf-8", httpd.body($req)))["q"] ==
             "SELECT value FROM cpu") {
             httpd.setHeader($req, "Content-Type", "application/json");
             httpd.respond(
@@ -267,7 +267,7 @@ func fakeFlux(srv as httpd.Server) {
     def seen as list of string init [];
     for (def i in 0..2) {
         def req as httpd.Request init httpd.accept($srv);
-        def body as string init convert.stringFromBytes("utf-8", httpd.body($req));
+        def body as string init encoding.decode("utf-8", httpd.body($req));
         $seen[] = httpd.method($req) + " " + httpd.path($req) + " org=" + httpd.query($req, "org") +
             " " +
             httpd.header($req, "Content-Type") + " " + $body;
@@ -372,7 +372,7 @@ func testErrorText() {
         status: 500,
         statusText: "",
         headers: {},
-        body: '{"error":"' + strings.repeat("A", 5000) + '"}'
+        body: '{"error":"' + strings.replicate("A", 5000) + '"}'
     };
     testing.assertTrue(len(errorFrom($long)) < MAX_ERROR + 20);
     testing.assertEqual(
@@ -411,7 +411,7 @@ func testARefusedConnectionIsANetError() {
 func answerDeep(srv as httpd.Server) {
     def req as httpd.Request init httpd.accept($srv);
     httpd.setHeader($req, "Content-Type", "application/json");
-    httpd.respond($req, 200, strings.repeat("[", 1001));
+    httpd.respond($req, 200, strings.replicate("[", 1001));
 }
 
 # A query reply past json's nesting cap is kind "limit", not an InfluxdbError.
