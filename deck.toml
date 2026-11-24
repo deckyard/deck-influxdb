@@ -1,6 +1,6 @@
 [package]
 name = "@jennifer/influxdb"
-version = "0.2.0"
+version = "0.3.0"
 description = "An InfluxDB client: line-protocol writes for 1.x, 2.x and 3.x, InfluxQL and Flux queries"
 license = "LGPL-3.0-only"
 authors = ["mplx <mplx@jennifer-lang.dev>"]
