@@ -5,9 +5,9 @@
 [![release](https://img.shields.io/github/v/release/jennifer-language/deck-influxdb)](https://github.com/jennifer-language/deck-influxdb/releases/latest)
 
 A [Jennifer](https://jennifer-lang.dev/) deck for
-[InfluxDB](https://www.influxdata.com/): build line-protocol points, write
-them, and query them back: InfluxDB 1.x with InfluxQL, 2.x with token auth
-and Flux, and 3.x with 2.x writes and InfluxQL queries.
+[InfluxDB™](https://www.influxdata.com/): build line-protocol points, write
+them, and query them back: InfluxDB 1.x with InfluxQL™, 2.x with token auth
+and Flux™, and 3.x with 2.x writes and InfluxQL queries.
 
 It was Jennifer's bundled `influxdb.j` module until 0.27; the surface is the same,
 so moving over changes only the import:
@@ -57,3 +57,11 @@ LGPL-3.0-only, see [LICENSE](LICENSE). Copyright (C) 2026 mplx &lt;mplx@jennifer
 
 `tools/check-headers.sh` checks every source file's SPDX header against
 `deck.toml`.
+
+## Trademarks
+
+InfluxDB™ is a trademark of InfluxData Inc. InfluxQL™, Flux™ and other product
+and company names may be trademarks of their respective owners. They are used
+only to identify the products this deck works with. This deck is an
+independent project, not affiliated with, sponsored or endorsed by InfluxData
+Inc.

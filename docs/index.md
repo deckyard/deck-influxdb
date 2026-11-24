@@ -3,12 +3,12 @@
 
 # @jennifer/influxdb
 
-InfluxDB time-series client.
+InfluxDB™ time-series client.
 
 Add it with `jvc add @jennifer/influxdb` and import it with `import "@jennifer/influxdb/" as influxdb;`. Write measurements as
 line-protocol points and query them back as parsed results, against both major
-API generations: 1.x (`/write?db=...` + InfluxQL) and 2.x
-(`/api/v2/write?org=...&bucket=...` + Flux). InfluxDB 3.x takes the 2.x
+API generations: 1.x (`/write?db=...` + InfluxQL™) and 2.x
+(`/api/v2/write?org=...&bucket=...` + Flux™). InfluxDB 3.x takes the 2.x
 writes but has no Flux; query it with InfluxQL through a 1.x client. Built on
 the [`http`](https://jennifer-lang.dev/modules/http.html) module, so it needs
 the default `jennifer` binary. A request the server refuses, or answers with
@@ -192,3 +192,11 @@ def csv as string init influxdb.queryFlux($db2,
 - [prometheus.md](https://jennifer-language.github.io/deck-prometheus/) - the pull-based metrics sibling; its retrieval
   half shares this parsed-result shape.
 - [modules/index.md](https://jennifer-lang.dev/modules/index.html) - the module catalog and import rules.
+
+## Trademarks
+
+InfluxDB™ is a trademark of InfluxData Inc. InfluxQL™, Flux™ and other product
+and company names may be trademarks of their respective owners. They are used
+only to identify the products this deck works with. This deck is an
+independent project, not affiliated with, sponsored or endorsed by InfluxData
+Inc.

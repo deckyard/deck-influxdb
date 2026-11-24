@@ -5,9 +5,9 @@
 
 ## Scope
 
-The deck writes measurements to InfluxDB and reads them back: line-protocol
+The deck writes measurements to InfluxDB™ and reads them back: line-protocol
 points built with `point` and the field and tag steps, written with `write`;
-InfluxQL queries with `query`, parsed into `Series`; Flux queries with
+InfluxQL™ queries with `query`, parsed into `Series`; Flux™ queries with
 `queryFlux`, returned as annotated CSV. It covers InfluxDB 1.x and 2.x, and
 3.x as far as 3.x speaks those APIs.
 
@@ -63,7 +63,7 @@ It is deliberately not an administration client:
   rather than putting it in the URL, so statements (a `CREATE USER ... WITH
   PASSWORD` included) stay out of proxy and access logs and URL length
   limits.
-- **Same result shape as the Prometheus deck.** The parsed `Series` matches
+- **Same result shape as the Prometheus™ deck.** The parsed `Series` matches
   the retrieval half of `@jennifer/prometheus`, so code reading either looks
   alike.
 

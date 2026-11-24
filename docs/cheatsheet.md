@@ -15,7 +15,7 @@ import "@jennifer/influxdb/" as influxdb;
 |---|---|---|
 | `influxdb.client(url as string, db as string)` | `Client` | Open a client to a database with no authentication |
 | `influxdb.clientWith(url as string, db as string, user as string, password as string)` | `Client` | Open a 1.x client with HTTP Basic-auth credentials |
-| `influxdb.client2(url as string, org as string, bucket as string, token as string)` | `Client` | Open an InfluxDB 2.x client |
+| `influxdb.client2(url as string, org as string, bucket as string, token as string)` | `Client` | Open an InfluxDB™ 2.x client |
 | `influxdb.point(measurement as string)` | `Point` | Start a point for a measurement (no tags or fields yet) |
 | `influxdb.tag(p as Point, key as string, value as string)` | `Point` | Add a tag (indexed string metadata) |
 | `influxdb.field(p as Point, key as string, value as float)` | `Point` | Add a float field |
@@ -26,8 +26,8 @@ import "@jennifer/influxdb/" as influxdb;
 | `influxdb.atTime(p as Point, t as time.Time)` | `Point` | Set the timestamp from a `time.Time` |
 | `influxdb.line(p as Point)` | `string` | Render a point to one line-protocol line |
 | `influxdb.write(c as Client, points as list of Point)` |  | Write points to the client's target (line protocol, nanosecond precision) |
-| `influxdb.query(c as Client, influxql as string)` | `Result` | Run an InfluxQL statement against a 1.x client's database and parse the result |
-| `influxdb.queryFlux(c as Client, flux as string)` | `string` | Run a Flux query against a 2.x client's organization and return the raw response body |
+| `influxdb.query(c as Client, influxql as string)` | `Result` | Run an InfluxQL™ statement against a 1.x client's database and parse the result |
+| `influxdb.queryFlux(c as Client, flux as string)` | `string` | Run a Flux™ query against a 2.x client's organization and return the raw response body |
 
 ## Types
 
