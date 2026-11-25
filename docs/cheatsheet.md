@@ -3,10 +3,10 @@
 
 # influxdb cheatsheet
 
-Every export of `@jennifer/influxdb`. The guide is [the introduction](index.md).
+Every export of `@deckyard/influxdb`. The guide is [the introduction](index.md).
 
 ```jennifer
-import "@jennifer/influxdb/" as influxdb;
+import "@deckyard/influxdb/" as influxdb;
 ```
 
 ## Functions

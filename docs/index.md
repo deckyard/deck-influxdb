@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: LGPL-3.0-only -->
 <!-- SPDX-FileCopyrightText: Copyright (C) 2026 mplx <mplx@jennifer-lang.dev> -->
 
-# @jennifer/influxdb
+# @deckyard/influxdb
 
 InfluxDB™ time-series client.
 
-Add it with `jvc add @jennifer/influxdb` and import it with `import "@jennifer/influxdb/" as influxdb;`. Write measurements as
+Add it with `jvc add @deckyard/influxdb` and import it with `import "@deckyard/influxdb/" as influxdb;`. Write measurements as
 line-protocol points and query them back as parsed results, against both major
 API generations: 1.x (`/write?db=...` + InfluxQL™) and 2.x
 (`/api/v2/write?org=...&bucket=...` + Flux™). InfluxDB 3.x takes the 2.x
@@ -23,7 +23,7 @@ with `reason`, `sent` and `replied`), a reached cap or a query reply past
 short `"closed"`.
 
 ```jennifer
-import "@jennifer/influxdb/" as influxdb;
+import "@deckyard/influxdb/" as influxdb;
 
 # 1.x: database + optional Basic auth, InfluxQL.
 def db as influxdb.Client init influxdb.client("http://localhost:8086", "metrics");
@@ -38,7 +38,7 @@ influxdb.write($db2, [$p]);   # same call - dispatches on the client version
 def csv as string init influxdb.queryFlux($db2, "from(bucket:\"mybucket\") |> range(start:-1h)");
 ```
 
-Runnable: [`examples/write.j`](https://github.com/jennifer-language/deck-influxdb/blob/main/examples/write.j).
+Runnable: [`examples/write.j`](https://github.com/deckyard/deck-influxdb/blob/main/examples/write.j).
 
 ## Client
 
@@ -130,7 +130,7 @@ export def struct Result {
 
 `influxdb.query(client, influxql)` runs an InfluxQL statement against `/query`
 and parses the tabular JSON into `Series` (the same read-a-parsed-result shape
-as [`prometheus`](https://jennifer-language.github.io/deck-prometheus/)'s retrieval half). Every cell is
+as [`prometheus`](https://deckyard.github.io/deck-prometheus/)'s retrieval half). Every cell is
 stringified: `time` comes back as its RFC 3339 string, numbers via their
 shortest form, booleans as `"true"` / `"false"`, and JSON `null` as `""` - so a
 homogeneous `list of list of string` can hold a row of otherwise mixed-type
@@ -186,10 +186,19 @@ def csv as string init influxdb.queryFlux($db2,
   header and are redacted from any raised error. TLS client certs are not wired;
   use a reverse proxy for those.
 
+## Moving from `@jennifer/influxdb`
+
+Up to 0.3.0 this deck was `@jennifer/influxdb`. Change the `[decks]` entry to
+`"@deckyard/influxdb" = "^0.4.0"` and the imports:
+
+```jennifer
+import "@deckyard/influxdb/" as influxdb;
+```
+
 ## See also
 
 - [http.md](https://jennifer-lang.dev/modules/http.html) - the HTTP client this module builds on.
-- [prometheus.md](https://jennifer-language.github.io/deck-prometheus/) - the pull-based metrics sibling; its retrieval
+- [prometheus.md](https://deckyard.github.io/deck-prometheus/) - the pull-based metrics sibling; its retrieval
   half shares this parsed-result shape.
 - [modules/index.md](https://jennifer-lang.dev/modules/index.html) - the module catalog and import rules.
 

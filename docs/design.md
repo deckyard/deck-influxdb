@@ -64,7 +64,7 @@ It is deliberately not an administration client:
   PASSWORD` included) stay out of proxy and access logs and URL length
   limits.
 - **Same result shape as the Prometheus™ deck.** The parsed `Series` matches
-  the retrieval half of `@jennifer/prometheus`, so code reading either looks
+  the retrieval half of `@deckyard/prometheus`, so code reading either looks
   alike.
 
 ## Errors

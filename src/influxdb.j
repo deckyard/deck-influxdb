@@ -30,7 +30,7 @@
  * decoding caps kind "limit", a deadline "timeout", a cut answer "closed".
  * @module influxdb
  * @example
- * import "@jennifer/influxdb/" as influxdb;
+ * import "@deckyard/influxdb/" as influxdb;
  * def db as influxdb.Client init influxdb.client("http://localhost:8086", "metrics");
  * def p as influxdb.Point init influxdb.field(
  *     influxdb.tag(influxdb.point("cpu"), "host", "server01"), "value", 0.64);

@@ -1,8 +1,8 @@
-# @jennifer/influxdb
+# @deckyard/influxdb
 
-[![test](https://github.com/jennifer-language/deck-influxdb/actions/workflows/test.yml/badge.svg)](https://github.com/jennifer-language/deck-influxdb/actions/workflows/test.yml)
-[![Documentation](https://img.shields.io/badge/docs-github%20pages-blue)](https://jennifer-language.github.io/deck-influxdb/)
-[![release](https://img.shields.io/github/v/release/jennifer-language/deck-influxdb)](https://github.com/jennifer-language/deck-influxdb/releases/latest)
+[![test](https://github.com/deckyard/deck-influxdb/actions/workflows/test.yml/badge.svg)](https://github.com/deckyard/deck-influxdb/actions/workflows/test.yml)
+[![Documentation](https://img.shields.io/badge/docs-github%20pages-blue)](https://deckyard.github.io/deck-influxdb/)
+[![release](https://img.shields.io/github/v/release/deckyard/deck-influxdb)](https://github.com/deckyard/deck-influxdb/releases/latest)
 
 A [Jennifer](https://jennifer-lang.dev/) deck for
 [InfluxDB™](https://www.influxdata.com/): build line-protocol points, write
@@ -13,15 +13,18 @@ It was Jennifer's bundled `influxdb.j` module until 0.27; the surface is the sam
 so moving over changes only the import:
 
 ```jennifer
-import "@jennifer/influxdb/" as influxdb;   # was: import "influxdb.j" as influxdb;
+import "@deckyard/influxdb/" as influxdb;   # was: import "influxdb.j" as influxdb;
 ```
 
-**[Documentation](https://jennifer-language.github.io/deck-influxdb/)**
+Up to 0.3.0 this deck was `@jennifer/influxdb`. To switch, change the `[decks]`
+entry to `"@deckyard/influxdb" = "^0.4.0"` and the imports to `"@deckyard/influxdb/"`.
+
+**[Documentation](https://deckyard.github.io/deck-influxdb/)**
 
 ## Install
 
 ```sh
-jvc add @jennifer/influxdb
+jvc add @deckyard/influxdb
 ```
 
 This vendors the deck to `vendor/<scope>/influxdb/`. Without `jvc`, unpack the
@@ -30,7 +33,7 @@ This vendors the deck to `vendor/<scope>/influxdb/`. Without `jvc`, unpack the
 ## Usage
 
 ```jennifer
-import "@jennifer/influxdb/" as influxdb;
+import "@deckyard/influxdb/" as influxdb;
 
 def c as influxdb.Client init influxdb.clientWith("http://localhost:8086", "metrics", "user", "pass");
 def p as influxdb.Point init influxdb.field(influxdb.tag(influxdb.point("cpu"), "host", "srv1"), "value", 0.64);

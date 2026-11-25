@@ -4,7 +4,7 @@
 # pragma-jennifer-version: >=0.27.0
 
 /**
- * @jennifer/influxdb: an InfluxDB client over `http` for
+ * @deckyard/influxdb: an InfluxDB client over `http` for
  * both API generations. Build line-protocol points and write them, then query
  * them back - InfluxQL against a 1.x client, Flux against a 2.x client. Needs
  * the default `jennifer` binary (net). Point it at a running InfluxDB (base URL
